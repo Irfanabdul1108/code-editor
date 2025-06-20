@@ -1,13 +1,11 @@
-let mongoose = require('mongoose');
-
-mongoose.connect(process.env.MONGO_URI);
+const mongoose = require('mongoose');
 
 let userSchema = new mongoose.Schema({
   name: String,
   username: String,
   email: String,
   password: String,
-  date:{
+  date: {
     type: Date,
     default: Date.now
   },
@@ -21,4 +19,4 @@ let userSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('User', userSchema); // 'User' is the name of the collection
+module.exports = mongoose.model('User', userSchema);
