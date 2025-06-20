@@ -12,4 +12,4 @@ export const removeClass = (el, className) => {
   }
 };
 
-export const api_base_url = "http://localhost:5000";
+export const api_base_url = import.meta.env.VITE_API_BASE_URL;
