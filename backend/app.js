@@ -1,55 +1,54 @@
-const createError = require('http-errors');
 const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
+const connectDB = require('./config/db'); // make sure this is correct
+const authRoute = require('./routes/auth.route');
+const userRoute = require('./routes/user.route');
 
+// Load environment variables
 dotenv.config();
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+// Connect to MongoDB
+connectDB();
 
 const app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+// ✅ CORS SETUP – Allow local + deployed frontend
+const allowedOrigins = [
+  'http://localhost:5173', // Local Vite dev server
+  'https://code-editor-i27d.vercel.app' // Your deployed frontend URL
+];
 
-// Configure CORS with specific origin
 app.use(cors({
-  origin: 'http://localhost:5173', // your frontend URL here
+  origin: function (origin, callback) {
+    // Allow requests with no origin (e.g., Postman, curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
+  credentials: true
 }));
 
-app.use(logger('dev'));
+// Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/v1/auth', authRoute);
+app.use('/api/v1/user', userRoute);
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
+// Root route
+app.get('/', (req, res) => {
+  res.send('API is running...');
 });
 
-// error handler
-app.use(function (err, req, res, next) {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // API or HTML error response
-  if (req.accepts('json')) {
-    res.status(err.status || 500).json({ error: err.message });
-  } else {
-    res.status(err.status || 500).render('error');
-  }
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server is running on port ${PORT}`);
 });
-
-module.exports = app;
