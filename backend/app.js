@@ -13,24 +13,24 @@ dotenv.config();
 connectDB();
 
 const app = express();
+const cors = require('cors');
 
-// CORS setup
 const allowedOrigins = [
-  'https://code-editor-hyt1.vercel.app/login'
+  'https://code-editor-hyt1.vercel.app'  // ✅ no /login here
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
     } else {
-      return callback(new Error('Not allowed by CORS'));
+      callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
+
 
 // Middleware
 app.use(express.json());
