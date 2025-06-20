@@ -13,7 +13,6 @@ dotenv.config();
 connectDB();
 
 const app = express();
-const cors = require('cors');
 
 const allowedOrigins = [
   'https://code-editor-hyt1.vercel.app'  // ✅ no /login here
