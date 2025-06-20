@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 // const connectDB = require('./config/db'); // make sure this is correct
 const authRoute = require('./routes/auth');
-const userRoute = require('./routes/user');
+const userRoute = require('./routes/users');
 
 // Load environment variables
 dotenv.config();
