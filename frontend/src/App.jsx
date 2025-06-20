@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import NoPage from './pages/NoPage';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
-import Editior from './pages/Editior';
+import Editior from './pages/UnifiedEditor';
 
 const App = () => {
   let isLoggedIn = localStorage.getItem("isLoggedIn");

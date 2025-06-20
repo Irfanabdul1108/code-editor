@@ -1,43 +1,43 @@
-const mongoose = require("mongoose");
+// Update your existing projectModel.js to include document fields
+const mongoose = require("mongoose")
 
-mongoose.connect('mongodb://127.0.0.1:27017/codeIDE');
+const projectSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    // Existing code fields
+    htmlCode: {
+      type: String,
+      default: "<h1>Hello world</h1>",
+    },
+    cssCode: {
+      type: String,
+      default: "body { background-color: #f4f4f4; }",
+    },
+    jsCode: {
+      type: String,
+      default: "// some comment",
+    },
+    // New document fields
+    documentContent: {
+      type: String,
+      default: "",
+    },
+    documentTitle: {
+      type: String,
+      default: "Untitled Document",
+    },
+  },
+  {
+    timestamps: true,
+  },
+)
 
-const projectSchema = new mongoose.Schema({
-  title: String,
-  createdBy: String,
-  date: {
-    type: Date,
-    default: Date.now
-  },
-  htmlCode: {
-    type: String,
-    default: `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Document</title>
-    </head>
-    <body>
-    
-    </body>
-    </html>`
-  },
-  cssCode: {
-    type: String,
-    default: `
-    body{
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }`
-  },
-  jsCode: {
-    type: String,
-    default: 'console.log("Hello World")'
-  }
-});
-
-module.exports = mongoose.model("Project", projectSchema);
+module.exports = mongoose.model("Project", projectSchema)
