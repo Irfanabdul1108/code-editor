@@ -16,8 +16,7 @@ const app = express();
 
 // ✅ CORS SETUP – Allow local + deployed frontend
 const allowedOrigins = [
-  'http://localhost:5173', // Local Vite dev server
-  'https://code-editor-i27d.vercel.app' // Your deployed frontend URL
+'https://code-editor-hyt1.vercel.app/login'
 ];
 
 app.use(cors({
